@@ -7,12 +7,12 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CatalanFlag = () => (
-  <svg width="16" height="12" viewBox="0 0 9 6" xmlns="http://www.w3.org/2000/svg" className="inline-block mr-1 rounded-sm shadow-sm border border-black/20">
-    <rect width="9" height="6" fill="#fcd116"/>
-    <rect width="9" height="1" y="0.5" fill="#ce1126"/>
-    <rect width="9" height="1" y="2" fill="#ce1126"/>
-    <rect width="9" height="1" y="3.5" fill="#ce1126"/>
-    <rect width="9" height="1" y="5" fill="#ce1126"/>
+  <svg width="16" height="12" viewBox="0 0 135 90" xmlns="http://www.w3.org/2000/svg" className="inline-block mr-1 rounded-sm shadow-sm border border-black/20">
+    <rect width="135" height="90" fill="#fcd116"/>
+    <rect width="135" height="10" y="10" fill="#ce1126"/>
+    <rect width="135" height="10" y="30" fill="#ce1126"/>
+    <rect width="135" height="10" y="50" fill="#ce1126"/>
+    <rect width="135" height="10" y="70" fill="#ce1126"/>
   </svg>
 );
 
@@ -37,6 +37,8 @@ export default function LanguageSwitcher() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const currentLang = languages.find(l => l.code === language) || languages[0];
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button 
@@ -44,7 +46,7 @@ export default function LanguageSwitcher() {
         className="flex items-center gap-2 px-3 py-2 rounded-full glass-panel hover:bg-white/5 transition-colors"
       >
         <Globe size={16} className="text-cinema-accent" />
-        <span className="text-sm font-medium">{languages.find(l => l.code === language)?.label}</span>
+        <span className="text-sm font-medium">{currentLang.label}</span>
       </button>
 
       <AnimatePresence>

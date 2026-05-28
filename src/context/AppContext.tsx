@@ -18,10 +18,27 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   useEffect(() => {
     const savedUser = localStorage.getItem('moodfi_username');
-    const savedLang = localStorage.getItem('moodfi_lang') as Language;
+    const savedLang = localStorage.getItem('moodfi_lang');
     
     if (savedUser) setUsernameState(savedUser);
-    if (savedLang) setLanguageState(savedLang);
+    
+    if (savedLang) {
+      if (['es-ES', 'en-US', 'ca-ES'].includes(savedLang)) {
+        setLanguageState(savedLang as Language);
+      } else if (savedLang === 'es' || savedLang === 'ca' || savedLang === 'en') {
+        const mapping: Record<string, Language> = {
+          es: 'es-ES',
+          en: 'en-US',
+          ca: 'ca-ES'
+        };
+        const mapped = mapping[savedLang];
+        setLanguageState(mapped);
+        localStorage.setItem('moodfi_lang', mapped);
+      } else {
+        setLanguageState('es-ES');
+        localStorage.setItem('moodfi_lang', 'es-ES');
+      }
+    }
   }, []);
 
   const setUsername = (user: string) => {

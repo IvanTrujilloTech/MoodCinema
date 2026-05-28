@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Play, Clock, Star, Calendar } from 'lucide-react';
+import { X, Play, Clock, Star, Calendar, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { api } from '@/lib/api';
 import { useAppContext } from '@/context/AppContext';
@@ -145,7 +145,10 @@ export default function MovieDetailsModal({ movieId, isOpen, onClose, onActorCli
                       </button>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-500 mt-2">✨ Haz clic en un actor para buscar sus películas no vistas.</p>
+                  <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                    <Sparkles size={12} className="text-cinema-accent animate-pulse" />
+                    <span>Haz clic en un actor para buscar sus películas no vistas.</span>
+                  </p>
                 </div>
 
                 {/* Watch Providers & Trailer */}
@@ -183,7 +186,7 @@ export default function MovieDetailsModal({ movieId, isOpen, onClose, onActorCli
                   </div>
 
                   <button 
-                    onClick={() => onPlayTrailer(movieId)}
+                    onClick={() => movieId && onPlayTrailer(movieId)}
                     className="flex items-center gap-2 px-6 py-3 bg-cinema-accent text-black font-bold rounded-lg hover:bg-amber-400 transition-colors w-full sm:w-auto justify-center"
                   >
                     <Play size={20} className="fill-black" />

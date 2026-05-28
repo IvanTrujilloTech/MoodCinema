@@ -1,8 +1,19 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Dice5, User } from 'lucide-react';
+import { ArrowLeft, Dice5, User, CloudRain, Zap, Laugh, Ghost, Heart, Compass, Coffee, Shuffle } from 'lucide-react';
+
+const IconMap = {
+  CloudRain,
+  Zap,
+  Laugh,
+  Ghost,
+  Heart,
+  Compass,
+  Coffee,
+  Shuffle
+};
 import { motion, AnimatePresence } from 'framer-motion';
 import { api } from '@/lib/api';
 import { useAppContext } from '@/context/AppContext';
@@ -14,10 +25,13 @@ import ExportButton from '@/components/ExportButton';
 import TrailerModal from '@/components/TrailerModal';
 import MovieDetailsModal from '@/components/MovieDetailsModal';
 
-export default function ResultsPage() {
+function ResultsPageContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { username, language } = useAppContext();
+  const langKey = (language && typeof language === 'string' && language.includes('-'))
+    ? (language.split('-')[0] as 'es' | 'en' | 'ca')
+    : 'es';
   
   const moodId = searchParams.get('mood');
   const actorQuery = searchParams.get('actor');
@@ -72,8 +86,11 @@ export default function ResultsPage() {
           setError(res.message || "No se encontraron películas. Prueba con otro estado de ánimo.");
         } else {
           setMovies(prev => append ? [...prev, ...res.data] : res.data);
-          // If we got 20, assume there might be more. If less, we've reached the end
-          setHasMore(res.data.length >= 10);
+          if (moodId === 'comfort') {
+            setHasMore(false);
+          } else {
+            setHasMore(res.data.length >= 10);
+          }
         }
       } else {
         router.push('/');
@@ -154,10 +171,13 @@ export default function ResultsPage() {
               animate={{ scale: 1 }}
               className={`inline-block p-4 rounded-full bg-gradient-to-br ${mood.color} mb-4 shadow-[0_0_30px_rgba(255,255,255,0.1)]`}
             >
-              <span className="text-5xl block">{mood.icon}</span>
+              {(() => {
+                const Icon = IconMap[mood.icon as keyof typeof IconMap];
+                return Icon ? <Icon size={40} className="text-white" /> : null;
+              })()}
             </motion.div>
             <h1 className="text-3xl md:text-4xl font-heading font-bold mb-2">
-              {mood.label[language.split('-')[0] as 'es' | 'en' | 'ca'] || mood.label.en}
+              {mood.label[langKey] || mood.label.en}
             </h1>
           </>
         ) : null}
@@ -173,8 +193,8 @@ export default function ResultsPage() {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           {isSpinning ? (
-            <div className="text-center">
-              <div className="text-6xl animate-bounce mb-4">🎰</div>
+            <div className="text-center flex flex-col items-center justify-center">
+              <Shuffle size={54} className="text-cinema-accent animate-spin-slow mb-4" />
               <p className="text-xl text-cinema-accent font-heading animate-pulse">
                 La ruleta está girando...
               </p>
@@ -243,5 +263,17 @@ export default function ResultsPage() {
       />
 
     </main>
+  );
+}
+
+export default function ResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen py-8 px-4 flex items-center justify-center">
+        <div className="w-12 h-12 border-4 border-cinema-border border-t-cinema-accent rounded-full animate-spin" />
+      </div>
+    }>
+      <ResultsPageContent />
+    </Suspense>
   );
 }
