@@ -106,7 +106,7 @@ export default function Home() {
               <input
                 type="text"
                 className="block w-full pl-12 pr-4 py-4 bg-white/5 border border-cinema-border rounded-2xl focus:ring-2 focus:ring-cinema-accent focus:border-transparent transition-all placeholder-gray-500 text-white"
-                placeholder="Filtro de Actor (Ej: Adam Sandler)"
+                placeholder="Busca a un actor"
                 value={actorSearch}
                 onChange={(e) => setActorSearch(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleActorSearch()}
