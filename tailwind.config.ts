@@ -22,9 +22,37 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-inter)'],
         heading: ['var(--font-outfit)'],
+        typewriter: ['var(--font-special-elite)', 'serif'],
+        crt: ['var(--font-vt323)', 'monospace'],
+      },
+      keyframes: {
+        flicker: {
+          '0%': { opacity: '0.96' },
+          '100%': { opacity: '1.0' },
+        },
+        glitch: {
+          '0%': { transform: 'translate(0)' },
+          '20%': { transform: 'translate(-1.5px, 1.5px)' },
+          '40%': { transform: 'translate(-1.5px, -1.5px)' },
+          '60%': { transform: 'translate(1.5px, 1.5px)' },
+          '80%': { transform: 'translate(1.5px, -1.5px)' },
+          '100%': { transform: 'translate(0)' },
+        },
+        'marquee-blink': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.4' },
+        },
+        'neon-pulse': {
+          '0%, 100%': { filter: 'drop-shadow(0 0 4px currentColor) drop-shadow(0 0 12px currentColor)' },
+          '50%': { filter: 'drop-shadow(0 0 6px currentColor) drop-shadow(0 0 20px currentColor)' },
+        }
       },
       animation: {
-        'spin-slow': 'spin 3s linear infinite',
+        'spin-slow': 'spin 5s linear infinite',
+        'flicker': 'flicker 0.15s infinite alternate',
+        'glitch': 'glitch 0.25s infinite',
+        'marquee-blink': 'marquee-blink 1s steps(2, start) infinite',
+        'neon-pulse': 'neon-pulse 2s infinite',
       }
     },
   },

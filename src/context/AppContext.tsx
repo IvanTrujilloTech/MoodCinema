@@ -8,6 +8,8 @@ interface AppContextType {
   setUsername: (username: string) => void;
   language: Language;
   setLanguage: (lang: Language) => void;
+  theme: string;
+  setTheme: (theme: string) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -15,6 +17,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [username, setUsernameState] = useState('');
   const [language, setLanguageState] = useState<Language>('es-ES');
+  const [theme, setThemeState] = useState('marquee');
 
   useEffect(() => {
     const savedUser = localStorage.getItem('moodfi_username');
@@ -41,6 +44,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   }, []);
 
+  const setTheme = (newTheme: string) => {
+    setThemeState(newTheme);
+  };
+
   const setUsername = (user: string) => {
     setUsernameState(user);
     localStorage.setItem('moodfi_username', user);
@@ -52,7 +59,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   return (
-    <AppContext.Provider value={{ username, setUsername, language, setLanguage }}>
+    <AppContext.Provider value={{ username, setUsername, language, setLanguage, theme, setTheme }}>
       {children}
     </AppContext.Provider>
   );
